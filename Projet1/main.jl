@@ -13,7 +13,6 @@ w = 10
 function main()
     p = read_prob(DATA_PATH*"RODD-probabilites.txt", w, h, K)
     include(DATA_PATH*"cost.gr")
-    display(C)
 
     for file in readdir(DATA_PATH*"/alpha/")
         include(DATA_PATH*"/alpha/"*file)
@@ -21,14 +20,17 @@ function main()
 
         # Resolution
         start = time()
-        x, y, obj = protect_species(p, K_rares, C, alpha)
+        x, y, obj, proba_survie = protect_species(p, K_rares, C, alpha)
         stop = time()
 
         # Affichage des donnees
         println("Temps de resolution : ",stop-start)
         println("Valeur de l'objectif : ",obj)
+        println("Taux de survie des especes : ",proba_survie)
         println("Tableau des zones protegees :")
         display(x+y)
+        println("\n")
+        
     end
 
 end 

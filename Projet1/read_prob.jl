@@ -1,5 +1,5 @@
 function read_prob(filename :: String, w :: Int, h :: Int, K :: Int)
-    prob = zeros(Float32, K, w, h)
+    prob = zeros(Float64, K, w, h)
     if isfile(filename)
         # L’ouvrir
         myFile = open(filename)
@@ -10,7 +10,7 @@ function read_prob(filename :: String, w :: Int, h :: Int, K :: Int)
                 k = parse(Int, elem_lines[1])
                 i = parse(Int, elem_lines[2])
                 j = parse(Int, elem_lines[3])
-                p = parse(Float32, elem_lines[4])
+                p = parse(Float64, elem_lines[4])
                 prob[k,i,j] = p
             end
         end
