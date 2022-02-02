@@ -1,8 +1,7 @@
 using JuMP
 using CPLEX
 
-
-function protect_species(p::Array{Float32, 3}, K_rares::Int, c::Array{Int, 2}, alpha::Array{Float64,1})
+function protect_species(p::Array{Float32, 3}, K_rares::Int, c::Array{Int64, 2}, alpha::Array{Float64,1})
 
     K = size(p, 1)
     n = size(p, 2)
@@ -32,6 +31,7 @@ function protect_species(p::Array{Float32, 3}, K_rares::Int, c::Array{Int, 2}, a
     value_x = JuMP.value.(x)
     value_y = JuMP.value.(y)
     obj = JuMP.objective_value(m)
+
     return value_x, value_y, obj
 end
 
