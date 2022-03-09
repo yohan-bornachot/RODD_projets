@@ -24,13 +24,18 @@ function main()
         stop = time()
 
         # Affichage des donnees
-        println("Temps de resolution : ",stop-start)
-        println("Valeur de l'objectif : ",obj)
-        println("Taux de survie des especes : ",proba_survie)
-        println("Tableau des zones protegees :")
-        display(x+y)
+        fp = open(DATA_PATH*"answers/"*file, "w")
+        println(fp, "Temps de resolution :")
+        println(fp, stop-start)
+        println(fp, "Valeur de l'objectif : ")
+        println(fp, obj)
+        println(fp, "Taux de survie des especes : ")
+        println(fp, proba_survie)
+        println(fp, "Tableau des zones protegees :")
+        println(fp, x+y)
         println("\n")
-        
+
+        close(fp)
     end
 
 end 
