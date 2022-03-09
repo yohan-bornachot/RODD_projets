@@ -20,7 +20,7 @@ function main()
 
         # Resolution
         start = time()
-        x, y, obj, proba_survie = protect_species(p, K_rares, C, alpha)
+        x, y, obj, proba_survie = protect_species_cstrOnSurvival(p, K_rares, C, alpha)
         stop = time()
 
         # Affichage des donnees
