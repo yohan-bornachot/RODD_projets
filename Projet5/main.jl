@@ -4,7 +4,7 @@ using JuMP
 # Paramètres du problème
 T = 12 # Horizon de temps
 M = 4 # Nombre de modes
-E = [3 for _ in 1:T] # Impact environnemental max
+E = [6 for _ in 1:T] # Impact environnemental max
 f = [10, 30, 60, 90] # Couts fixes des modes de production
 e = [8, 6, 4, 2] # Impact environnementaux des modes de production
 h = ones(Int, T) # Cout de stockage unitaire (invariable au cours du temps)
@@ -53,10 +53,10 @@ end
 cout_moyen = zeros(T)
 pol_moyenne = zeros(T)
 
-nb_iter = 200
+nb_iter = 100
 # Résolution des instances pour plusieurs périodes de temps
 for i in 1:nb_iter
-    print("\rActuellement : ",i/2,"% du calcul effectue")
+    print("\rActuellement : ",i,"% du calcul effectue")
     d = [mod(rand(Int),70-20)+20 for _ in 1:T] # Demande suit loi uniforme
     for P in 1:T
         x, y, s, pol, obj = solve_instance(T, M, E, d, f, e, h, p, P)
