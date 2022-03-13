@@ -4,7 +4,7 @@ using JuMP
 # Paramètres du problème
 T = 12 # Horizon de temps
 M = 4 # Nombre de modes
-E = [6 for _ in 1:T] # Impact environnemental max
+E = [3 for _ in 1:T] # Impact environnemental max
 f = [10, 30, 60, 90] # Couts fixes des modes de production
 e = [8, 6, 4, 2] # Impact environnementaux des modes de production
 h = ones(Int, T) # Cout de stockage unitaire (invariable au cours du temps)
@@ -52,25 +52,31 @@ end
 
 cout_moyen = zeros(T)
 pol_moyenne = zeros(T)
+pol_var = zeros(T)
 
 nb_iter = 100
 # Résolution des instances pour plusieurs périodes de temps
 for i in 1:nb_iter
-    print("\rActuellement : ",i,"% du calcul effectue")
+    print("\rActuellement : ",i,"/",nb_iter," itérations effectuées")
     d = [mod(rand(Int),70-20)+20 for _ in 1:T] # Demande suit loi uniforme
     for P in 1:T
         x, y, s, pol, obj = solve_instance(T, M, E, d, f, e, h, p, P)
         cout_moyen[P] += obj
         pol_moyenne[P] += sum(pol)/T
+        pol_var[P] += sum(pol.*pol)/T
     end
+    
 end
 for P in 1:T
     cout_moyen[P] = round(cout_moyen[P]/nb_iter, digits = 3)
     pol_moyenne[P] = round(pol_moyenne[P]/nb_iter, digits = 3)
+    pol_var[P] = pol_var[P] - pol_moyenne[P]*pol_moyenne[P]
+    pol_var[P] = round(pol_var[P]/nb_iter, digits=3)
 end
 
 fp = open("./result.csv", "w")
 println(fp, T)
 println(fp, cout_moyen)
 println(fp, pol_moyenne)
+println(fp, pol_var)
 close(fp)
