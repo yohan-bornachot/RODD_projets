@@ -25,7 +25,6 @@ function solve_instance(T::Int, M::Int, E::Array{Int, 1}, d::Array{Int, 1}, f::A
     @variable(model, x[1:T, 1:M] >= 0)
     @variable(model, y[1:T, 1:M], Bin)
     @variable(model, s[1:T+1] >= 0)
-    @variable(model, pol[1:T])
 
     # Objectif
     @objective(model, Min, sum(p[t, m]*x[t, m] + f[m]*y[t, m] for m in 1:M, t in 1:T) + sum(h[t]*s[t+1] for t in 1:T))
@@ -34,8 +33,7 @@ function solve_instance(T::Int, M::Int, E::Array{Int, 1}, d::Array{Int, 1}, f::A
     @constraint(model, s[1]==0)
     @constraint(model, [t in 1:T], sum(x[t, m] - s[t+1] + s[t] for m in 1:M) == d[t])
     @constraint(model, [t in 1:T, m in 1:M], x[t, m] <= sum(d[t_prime] for t_prime in t:T)*y[t, m])
-    @constraint(model, [t in 1:T],  sum( (e[m] - E[t_prime])*x[t_prime, m] for m in 1:M, t_prime in t:min(T, t+P)) == pol[t])
-    @constraint(model, [t in 1:T], pol[t] <= 0)
+    @constraint(model, [t in 1:T],  sum( (e[m] - E[t_prime])*x[t_prime, m] for m in 1:M, t_prime in t:min(T, t+P)) <= 0)
 
     #println(JuMP.constraints_string(REPLMode, model))
 
@@ -43,7 +41,8 @@ function solve_instance(T::Int, M::Int, E::Array{Int, 1}, d::Array{Int, 1}, f::A
     x_val = JuMP.value.(x)
     y_val = JuMP.value.(y)
     s_val = JuMP.value.(s)
-    pol_val = JuMP.value.(pol)
+
+    pol_val = sum(e[m]*x_val[t, m] for m in 1:M, t in 1:T)
 
     obj = JuMP.objective_value(model)
 
@@ -62,8 +61,7 @@ for i in 1:nb_iter
     for P in 1:T
         x, y, s, pol, obj = solve_instance(T, M, E, d, f, e, h, p, P)
         cout_moyen[P] += obj
-        pol_moyenne[P] += sum(pol)/T
-        pol_var[P] += sum(pol.*pol)/T
+        pol_moyenne[P] += pol
     end
     
 end
