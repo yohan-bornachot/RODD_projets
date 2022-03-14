@@ -32,6 +32,9 @@ function protect_species_cstrOnSurvival(p::Array{Float64, 3}, K_rares::Int, c::A
     ### Optimization
     optimize!(m)
 
+    if JuMP.termination_status(m) == JuMP.INFEASIBLE
+        return -1, -1, -1, -1
+    end
     value_x = JuMP.value.(x)
     value_y = JuMP.value.(y)
     obj = JuMP.objective_value(m)
