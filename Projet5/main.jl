@@ -2,7 +2,7 @@ using CPLEX
 using JuMP
 
 # Paramètres du problème
-T = 12 # Horizon de temps
+T = 30 # Horizon de temps
 M = 4 # Nombre de modes
 E = [3 for _ in 1:T] # Impact environnemental max
 f = [10, 30, 60, 90] # Couts fixes des modes de production
@@ -42,7 +42,7 @@ function solve_instance(T::Int, M::Int, E::Array{Int, 1}, d::Array{Int, 1}, f::A
     y_val = JuMP.value.(y)
     s_val = JuMP.value.(s)
 
-    pol_val = sum(e[m]*x_val[t, m] for m in 1:M, t in 1:T)
+    pol_val = sum(e[m]*x_val[t, m] for m in 1:M, t in 1:T)/T
 
     obj = JuMP.objective_value(model)
 
@@ -53,7 +53,7 @@ cout_moyen = zeros(T)
 pol_moyenne = zeros(T)
 pol_var = zeros(T)
 
-nb_iter = 100
+nb_iter = 20
 # Résolution des instances pour plusieurs périodes de temps
 for i in 1:nb_iter
     print("\rActuellement : ",i,"/",nb_iter," itérations effectuées")
@@ -68,13 +68,10 @@ end
 for P in 1:T
     cout_moyen[P] = round(cout_moyen[P]/nb_iter, digits = 3)
     pol_moyenne[P] = round(pol_moyenne[P]/nb_iter, digits = 3)
-    pol_var[P] = pol_var[P] - pol_moyenne[P]*pol_moyenne[P]
-    pol_var[P] = round(pol_var[P]/nb_iter, digits=3)
 end
 
 fp = open("./result.csv", "w")
 println(fp, T)
 println(fp, cout_moyen)
 println(fp, pol_moyenne)
-println(fp, pol_var)
 close(fp)
