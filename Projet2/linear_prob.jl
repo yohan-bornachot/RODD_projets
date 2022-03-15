@@ -31,6 +31,9 @@ function linear_prob(C::Array{Int, 2}, d::Array{Float64, 4}, A_min::Int, A_max::
     @constraint(m, [i in 1:n, j in 1:n], z[i,j,i,j] == 0)
 
     optimize!(m)
+    if JuMP.termination_status(m) != JuMP.OPTIMAL
+        return -1, -1, -1, -1
+    end
 
     return JuMP.value.(num), JuMP.value.(den), JuMP.value.(x), JuMP.objective_value(m)
 end
