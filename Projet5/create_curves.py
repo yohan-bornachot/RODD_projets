@@ -6,6 +6,10 @@ with open("./result.csv","r") as f:
     T = int(data[0])
     cost = list(map(lambda x: float(x),data[1][1:-2].split(",")))
     pol = list(map(lambda x: float(x),data[2][1:-2].split(",")))
+<<<<<<< HEAD
+=======
+    # pol_var = list(map(lambda x: float(x),data[3][1:-2].split(",")))
+>>>>>>> 76b36df2106fc278f5be1d8a928211d2d77587c1
 
 t = [i for i in range(1, T+1)]
 plt.xlabel("Taille de la fenêtre glissante")

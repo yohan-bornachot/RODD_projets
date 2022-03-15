@@ -2,8 +2,13 @@ using CPLEX
 using JuMP
 
 # Paramètres du problème
+<<<<<<< HEAD
 T = 12 # Horizon de temps
 M = 10 # Nombre de modes
+=======
+T = 30 # Horizon de temps
+M = 4 # Nombre de modes
+>>>>>>> 76b36df2106fc278f5be1d8a928211d2d77587c1
 E = [3 for _ in 1:T] # Impact environnemental max
 f = [0, 20, 30, 40, 50, 60, 70, 80, 90, 100] # Couts fixes des modes de production
 e = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1] # Impact environnementaux des modes de production
@@ -68,13 +73,10 @@ end
 for P in 1:T
     cout_moyen[P] = round(cout_moyen[P]/nb_iter, digits = 3)
     pol_moyenne[P] = round(pol_moyenne[P]/nb_iter, digits = 3)
-    pol_var[P] = pol_var[P] - pol_moyenne[P]*pol_moyenne[P]
-    pol_var[P] = round(pol_var[P]/nb_iter, digits=3)
 end
 
 fp = open("./result.csv", "w")
 println(fp, T)
 println(fp, cout_moyen)
 println(fp, pol_moyenne)
-println(fp, pol_var)
 close(fp)
