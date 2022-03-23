@@ -1,0 +1,52 @@
+# SANS CONTRAINTE SUPPLEMENTAIRE
+Methode mixte
+Time : 0.04887819290161133, obj : 8219.5782
+. x . . . . . . x .  
+. . . . x . . x . .  
+. . x . . x . . . .  
+. x . . x . . . . .  
+x . x . . . x . . x  
+. . . . . . . . . .  
+. . x . . . x . . x  
+. x . . x . . . x .  
+. . . x . . . . . .  
+. . . . x . . x . .  
+Méthode quadratique avec linéarisation.
+Time : 0.01623821258544922, obj : 8219.5782
+. x . . . . . . x .  
+. . . . x . . x . .  
+. . x . . x . . . .  
+. x . . x . . . . .  
+x . x . . . x . . x  
+. . . . . . . . . .  
+. . x . . . x . . x  
+. x . . x . . . x .  
+. . . x . . . . . .  
+. . . . x . . x . . 
+
+
+# AVEC CONTRAINTE NB PARCELLES NON COUPÉES >= 60
+Méthode mixte.
+Time : 0.2295849323272705, obj : 6753.93319999999
+x x . x x x x x x x  
+x . x . x . x . x .  
+. x . x . x . x . x  
+x . x . x . x . x .  
+x x . x . x . x . x     
+x . x . x . x . x .  
+x x . x . x . x . x  
+x . x . x . x . x x  
+. x . x . x . x . x  
+x . x . x x x x x x  
+Méthode quadratique avec linéarisation.
+Time : 0.025198936462402344, obj : 6753.9332
+x x . x x x x x x x  
+x . x . x . x . x .  
+. x . x . x . x . x  
+x . x . x . x . x .  
+x x . x . x . x . x  
+x . x . x . x . x .  
+x x . x . x . x . x  
+x . x . x . x . x x  
+. x . x . x . x . x  
+x . x . x x x x x x

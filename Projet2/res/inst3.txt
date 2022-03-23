@@ -1,0 +1,15 @@
+num = 70.0 , den = 70.0
+Time : 1.4924421310424805
+Nb_it : 2
+DDPMV : 1.0
+
+. . . . x . x x x x  
+. . . x x x x x . .  
+x x x x x x x . x .  
+x x x x x x x . x x  
+x x x x x x x . . x  
+x x x x x . x x . .  
+x x x x x . x . x x  
+x x x x x . x . x x  
+. x x x x x . . x x  
+. . . x x x x x . .  

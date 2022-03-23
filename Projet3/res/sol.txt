@@ -1,0 +1,10 @@
+# Résolution avec contrainte N[i] <= 3 :
+
+N : [0.0, 3.0, 3.0, 2.0, 3.0, 3.0, 1.0, 1.0]
+Valeur de l'objectif : 0.01558809645330513
+
+# Résolution avec contrainte N[i] <= 2 :
+
+N : [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0]
+Valeur de l'objectif : 0.06243336502896749
+Proba de perte des allèles : [0.0, 0.0, 0.0, 0.06243336502896749, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]

@@ -63,7 +63,7 @@ function protect_species_cstrOnBudget(p::Array{Float64, 3}, K_rares::Int, c::Arr
 
     ### Objective
     #@objective(m, Min, sum(c[i,j]*x[i,j] for i in 1:n, j in 1:n))
-    @objective(m, Min, sum(log(1-p[k,i,j])*x[i,j] for i in 1:n, j in 1:n))
+    @objective(m, Max, sum(log(1-p[k,i,j])*x[i,j] for i in 1:n, j in 1:n))
 
 
     ### Constraints
