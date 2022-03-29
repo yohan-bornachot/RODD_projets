@@ -38,7 +38,7 @@ function methode_mixte(t::Array{Int,2}, w1::Float64, w2::Float64, l::Float64, g:
     @objective(model, Max, w1*sum(t[i,j]*(1-x[i,j]) for i in 1:n, j in 1:m) + w2*l*g*sum(4*x[i,j]-d[i,j] for i in 1:n, j in 1:m))
 
     @constraint(model, [i in 1:n, j in 1:m], d[i,j] >= sum(x[v[1],v[2]] for v in A_ij(i,j,n,m))-size(A_ij(i,j,n,m),1)*(1-x[i,j]))
-    @constraint(model, sum(x[i,j] for i in 1:n, j in 1:m) >= 60)
+    # @constraint(model, sum(x[i,j] for i in 1:n, j in 1:m) >= 60)
 
     optimize!(model)
 
@@ -70,7 +70,7 @@ function methode_quadratique(t::Array{Int,2}, w1::Float64, w2::Float64, l::Float
 
     @objective(model, Max,  w1*sum(t[i,j]*(1-x[i,j]) for i in 1:n, j in 1:m) + w2*l*g*(S1+S2+S3+S4))
 
-    @constraint(model, sum(x[i,j] for i in 1:n, j in 1:m) >= 60)
+    # @constraint(model, sum(x[i,j] for i in 1:n, j in 1:m) >= 60)
 
     @constraint(model, S1 == sum(x[i,1]+x[i,m] for i in 1:n))
     @constraint(model, S2 == sum(x[1,j]+x[n,j] for j in 1:m))

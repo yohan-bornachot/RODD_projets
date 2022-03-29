@@ -97,6 +97,5 @@ function evaluate_influence_of_n()
 
 end
 
-#evaluate_influence_of_n()
-
 main()
+#evaluate_influence_of_n()

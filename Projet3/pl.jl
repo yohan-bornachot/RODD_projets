@@ -36,23 +36,26 @@ function save_diversity(nb_alleles_per_indiv::Array{Int,2}, Nm::Int, thetas::Arr
     @constraint(m, [i in 1:n], N[i]>=0)
     @constraint(m, [i in 1:p], y[i] - sum(N[j] for j in 1:n if nb_alleles_per_indiv[i,j]==2) <= z[i])
     @constraint(m, [theta in thetas, i in 1:p], log(theta)+(1/theta)*(y[i]-theta)  >= -log(2)*sum(N[j] for j in 1:n if nb_alleles_per_indiv[i,j]==1))
-    #@constraint(m, [j in 1:n], N[j]<=3)
+    @constraint(m, [j in 1:n], N[j]<=3)
     @constraint(m, sum(N[j] for j in 1:Nm) == n)
     @constraint(m, sum(N[j] for j in Nm+1:n) == n)
 
     optimize!(m)
+    z_val = JuMP.value.(z)
 
-    return JuMP.value.(N), JuMP.objective_value(m)
+    return JuMP.value.(N), z_val, JuMP.objective_value(m)
 end
 
 function main()
-    nb_alleles_per_indiv, N, Nm, C, T, init = read_instance("DivGenetique_julia.dat")
+    nb_alleles_per_indiv, N, Nm, C, G, A, T, init = read_instance("DivGenetique_julia.dat")
     thetas = [init^((T-r)/(T-1)) for r in 1:T]
-    N, obj = save_diversity(nb_alleles_per_indiv, Nm, thetas)
-    display(N)
-    println("\nValeur de l'objectif : ",obj)
-
-
+    start = time() 
+    N, proba_perte_allele, obj = save_diversity(nb_alleles_per_indiv, Nm, thetas)
+    stop = time()
+    println("\n Temps pour resoudre : ", stop - start)
+    println(N)
+    println("\n Valeur de l'objectif : ",obj)
+    println("\n Proba de perte des allèles : ", proba_perte_allele)
 end
 
 function study_influence_of_N()
@@ -78,7 +81,7 @@ function study_influence_of_N()
         for j in 1:nb_iter
             nb_alleles_per_indiv = create_instance(G, A, floor(Int,N[i]))
             start = time()
-            _, obj = save_diversity(nb_alleles_per_indiv, Nm, thetas)
+            _, _, obj = save_diversity(nb_alleles_per_indiv, Nm, thetas)
             stop = time()
             t = stop - start
             t_vec[i] += t
@@ -117,7 +120,7 @@ function study_influence_of_G()
         for j in 1:nb_iter
             nb_alleles_per_indiv = create_instance(G[i], A, N)
             start = time()
-            _, obj = save_diversity(nb_alleles_per_indiv, Nm, thetas)
+            _, _, obj = save_diversity(nb_alleles_per_indiv, Nm, thetas)
             stop = time()
             t = stop - start
             t_vec[i] += t
@@ -156,7 +159,7 @@ function study_influence_of_A()
         for j in 1:nb_iter
             nb_alleles_per_indiv = create_instance(G, A[i], N)
             start = time()
-            _, obj = save_diversity(nb_alleles_per_indiv, Nm, thetas)
+            _, _, obj = save_diversity(nb_alleles_per_indiv, Nm, thetas)
             stop = time()
             t = stop - start
             t_vec[i] += t
@@ -196,7 +199,7 @@ function study_influence_of_theta()
         for j in 1:nb_cases
             thetas = [init^((T[j]-r)/(T[j]-1)) for r in 1:T[j]]    
             start = time()
-            _, obj = save_diversity(nb_alleles_per_indiv, Nm, thetas)
+            _, _, obj = save_diversity(nb_alleles_per_indiv, Nm, thetas)
             stop = time()
             t = stop - start
             t_vec[j] += t
@@ -218,8 +221,8 @@ function study_influence_of_theta()
 end
 
 
-#main()
+main()
 #study_influence_of_N()
 #study_influence_of_G()
 #study_influence_of_A()
-study_influence_of_theta()
+# study_influence_of_theta()

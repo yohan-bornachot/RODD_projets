@@ -29,9 +29,10 @@ function linear_prob(C::Array{Int, 2}, d::Array{Float64, 4}, A_min::Int, A_max::
     @constraint(m, [i in 1:n, j in 1:n, k in 1:n, l in 1:n], z[i,j,k,l] <= x[k,l])
     @constraint(m, [i in 1:n, j in 1:n], sum(z[i,j,k,l] for k in 1:n, l in 1:n) == x[i,j])
     @constraint(m, [i in 1:n, j in 1:n], z[i,j,i,j] == 0)
+    @constraint(m, [i in 1:n, j in 1:n, k in 1:n, l in 1:n], z[i,j,k,l] <= x[k,l])
 
     optimize!(m)
-    if JuMP.termination_status(m) != JuMP.OPTIMAL
+    if JuMP.termination_status(m) != MOI.OPTIMAL
         return -1, -1, -1, -1
     end
 
